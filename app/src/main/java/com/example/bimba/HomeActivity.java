@@ -103,7 +103,7 @@ public class HomeActivity extends AppCompatActivity {
         modules.add(new Module(2,"Daftar Murid", R.drawable.siswa, "USER", SiswaActivity.class));
         modules.add(new Module(3,"Transaksi", R.drawable.transaksi, "USER", TransaksiActivity.class));
         modules.add(new Module(4,"Tagihan", R.drawable.budget, "USER", TagihanActivity.class));
-        //modules.add(new Module(5,"Biaya", R.drawable.biaya, "USER", BiayaActivity.class));
+        modules.add(new Module(5,"Biaya", R.drawable.biaya, "USER", BiayaActivity.class));
 
     }
 
