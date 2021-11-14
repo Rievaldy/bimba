@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Siswa.SiswaActivity">
+    tools:context=".SiswaActivity">
 <!--    filter if needed-->
 
 <!--    <LinearLayout-->
@@ -34,7 +34,7 @@
 <!--    </LinearLayout>-->
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_data_nasabah"
+        android:id="@+id/list_data_siswa"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,7 +45,7 @@
         tools:listitem="@layout/list_item_user" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_addnasabah"
+        android:id="@+id/btn_addsiswa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/holo_blue_dark"

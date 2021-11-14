@@ -2,33 +2,49 @@ package com.example.bimba.RESTAPI.Siswa;
 
 import com.example.bimba.RESTAPI.Response;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiInterfaceSiswa {
 
-    @GET("siswa/read_siswa")
+    @GET("Siswa/read_siswa")
     Call<ResponseSiswa> getSiswa(
             @Query("nis") int nis,
-            @Query("id_user") String id_user,
+            @Query("id_user") int id_user,
             @Query("order_by") String orderBy,
             @Query("limit") String limit,
             @Query("offset") String offset
     );
 
-    @FormUrlEncoded
-    @POST("siswa/create_siswa")
+    @Multipart
+    @POST("Siswa/create_siswa")
     Call<Response> createSiswa(
-            @Field("first_name") String firstName,
-            @Field("last_name") String lastName,
-            @Field("jenis_kelamin") String jenisKelamin,
-            @Field("tanggal_lahir") String tanggalLahir,
-            @Field("tanggal_masuk") String tanggalMasuk,
-            @Field("foto_siswa") String fotoSiswa,
-            @Field("id_user") String id_user
+            @Part("first_name") RequestBody firstName,
+            @Part("last_name") RequestBody lastName,
+            @Part("jenis_kelamin") RequestBody jenisKelamin,
+            @Part("tanggal_lahir") RequestBody tanggalLahir,
+            @Part("tahun_masuk") RequestBody tanggalMasuk,
+            @Part MultipartBody.Part fotoSiswa,
+            @Part("id_user") RequestBody id_user
+    );
+
+    @Multipart
+    @POST("Siswa/update_siswa")
+    Call<Response> updateSiswa(
+            @Part("nis") RequestBody nis,
+            @Part("first_name") RequestBody firstName,
+            @Part("last_name") RequestBody lastName,
+            @Part("jenis_kelamin") RequestBody jenisKelamin,
+            @Part("tanggal_lahir") RequestBody tanggalLahir,
+            @Part("tahun_masuk") RequestBody tanggalMasuk,
+            @Part MultipartBody.Part fotoSiswa
     );
 }

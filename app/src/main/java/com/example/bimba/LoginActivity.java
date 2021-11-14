@@ -18,6 +18,8 @@ import com.example.bimba.RESTAPI.User.ApiInterfaceUser;
 import com.example.bimba.RESTAPI.UserAccess.ApiInterfaceUserAccess;
 import com.example.bimba.RESTAPI.UserAccess.ResponseUserAccess;
 
+import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,10 +33,9 @@ public class LoginActivity extends AppCompatActivity {
     EditText etPassword;
     Button login;
 
-    public static final String MODE_USER = "MODE_USER";
-    public static final String USER_EMAIL = "USER_EMAIL";
     private ApiInterfaceUserAccess apiInterfaceUserAccess;
     private UserAccess userAccess;
+    private SessionManagement sessionManagement ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         etEmailUser = findViewById(R.id.loginEmail);
         etPassword = findViewById(R.id.loginPassword);
         apiInterfaceUserAccess = ApiClient.getClient().create(ApiInterfaceUserAccess.class);
+        sessionManagement = new SessionManagement(getApplicationContext());
 
         tvDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,9 +64,10 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ResponseUserAccess> call, Response<ResponseUserAccess> response) {
                         if(response.isSuccessful()){
-
                             if (response.body().getData().size() > 0){
                                 userAccess = response.body().getData().get(0);
+                                sessionManagement.saveUserAccessSession(userAccess.getIdLevel());
+                                sessionManagement.saveUserEmailSession(userAccess.getEmailUser());
                                 showMessage(LoginActivity.this, userAccess.getEmailUser() + userAccess.getIdLevel());
                                 switch (userAccess.getIdLevel()){
                                     case 1 :
@@ -81,11 +84,19 @@ public class LoginActivity extends AppCompatActivity {
                                         break;
                                 }
                             }
+                        }else{
+                            try {
+                                Log.d("error", "onResponse: " + response.errorBody().string());
+                            } catch (Exception e) {
+                                Log.d("tes", "onResponse: " + e.getMessage());
+                                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ResponseUserAccess> call, Throwable t) {
+                        Log.d("tes", "onFailure: " + t.getMessage());
                         showMessage(LoginActivity.this, "Failed To getting Data User Access");
                     }
                 });
@@ -96,24 +107,18 @@ public class LoginActivity extends AppCompatActivity {
 
     public void modeUser(){
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        intent.putExtra(MODE_USER, "USER");
-        intent.putExtra(USER_EMAIL, userAccess.getEmailUser());
         startActivity(intent);
         finish();
     }
 
     public void modeAdmin(){
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        intent.putExtra(MODE_USER, "ADMIN");
-        intent.putExtra(USER_EMAIL, userAccess.getEmailUser());
         startActivity(intent);
         finish();
     }
 
     public void modeOwner(){
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        intent.putExtra(MODE_USER, "OWNER");
-        intent.putExtra(USER_EMAIL, userAccess.getEmailUser());
         startActivity(intent);
         finish();
     }

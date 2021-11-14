@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="20dp"
+    android:layout_gravity="center"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:textColor="@color/white"
+            android:id="@+id/title_dialog_paket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tambah Rincian Biaya"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:textSize="20dp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+        <TextView
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pilih Biaya :"
+            android:textColor="#000"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinner_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/style_spinner" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_add_dialog_rincian_biaya"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray"
+        android:text="Tambah"
+        android:layout_gravity="end"
+        android:layout_margin="20dp" />
+
+</LinearLayout>

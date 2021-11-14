@@ -12,7 +12,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiInterfaceUserAccess {
-    @GET("useraccess/read_useraccess")
+    @GET("UserAccess/read_userAccess")
     Call<ResponseUserAccess> getUserAccess(
             @Query("id_level") int idLevel,
             @Query("email_user") String emailUser,
@@ -23,7 +23,7 @@ public interface ApiInterfaceUserAccess {
     );
 
     @FormUrlEncoded
-    @POST("useraccess/create_useraccess")
+    @POST("UserAccess/create_userAccess")
     Call<Response> createUserAccess(
             @Field("email_user") String emailUser,
             @Field("password") String password,

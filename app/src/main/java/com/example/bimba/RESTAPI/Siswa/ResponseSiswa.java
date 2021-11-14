@@ -3,6 +3,7 @@ package com.example.bimba.RESTAPI.Siswa;
 import com.example.bimba.Model.Siswa;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResponseSiswa {
@@ -14,9 +15,9 @@ public class ResponseSiswa {
     int status;
 
     @SerializedName("data")
-    List<Siswa> data;
+    ArrayList<Siswa> data;
 
-    public ResponseSiswa(String message, int status, List<Siswa> data) {
+    public ResponseSiswa(String message, int status, ArrayList<Siswa> data) {
         this.message = message;
         this.status = status;
         this.data = data;
@@ -38,11 +39,11 @@ public class ResponseSiswa {
         this.status = status;
     }
 
-    public List<Siswa> getData() {
+    public ArrayList<Siswa> getData() {
         return data;
     }
 
-    public void setData(List<Siswa> data) {
+    public void setData(ArrayList<Siswa> data) {
         this.data = data;
     }
 }

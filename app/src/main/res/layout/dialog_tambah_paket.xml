@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="20dp"
+    android:layout_gravity="center"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:textColor="@color/white"
+            android:id="@+id/title_dialog_paket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tambah Paket"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:textSize="20dp"/>
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_desc_paket"
+        android:hint="Deskripsi Paket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/et_masa_belajar_paket"
+        android:hint="Masa Pembelajaran"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/btn_add_dialog_paket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray"
+        android:text="Tambah"
+        android:layout_gravity="end"
+        android:layout_margin="20dp" />
+
+</LinearLayout>

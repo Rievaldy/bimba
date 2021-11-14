@@ -3,15 +3,32 @@ package com.example.bimba.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Siswa implements Parcelable {
 
+    @SerializedName("nis")
     int nis;
+
+    @SerializedName("first_name")
     String firstName;
+
+    @SerializedName("last_name")
     String lastName;
+
+    @SerializedName("jenis_kelamin")
     String jenisKelamin;
+
+    @SerializedName("tanggal_lahir")
     String tanggalLahir;
+
+    @SerializedName("tahun_masuk")
     String tahunMasuk;
+
+    @SerializedName("foto_siswa")
     String fotoSiswa;
+
+    @SerializedName("id_user")
     int idUser;
 
     public Siswa() {
@@ -130,5 +147,10 @@ public class Siswa implements Parcelable {
         parcel.writeString(tahunMasuk);
         parcel.writeString(fotoSiswa);
         parcel.writeInt(idUser);
+    }
+
+    @Override
+    public String toString() {
+        return firstName +" "+lastName;
     }
 }

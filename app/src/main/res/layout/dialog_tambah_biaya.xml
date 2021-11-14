@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="20dp"
+    android:layout_gravity="center"
+    android:background="@android:color/white"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:textColor="@color/white"
+            android:id="@+id/title_dialog_biaya"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tambah Biaya"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:textSize="20dp"/>
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_desc_biaya"
+        android:hint="Deskripsi Biaya"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/et_harga_biaya"
+        android:hint="Harga Biaya"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:inputType="number"/>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+        <TextView
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jenis Pembayaran :"
+            android:textColor="#000"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinner_dialog_jenis_pembayaran"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/style_spinner" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_add_dialog_biaya"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray"
+        android:text="Tambah"
+        android:layout_gravity="end"
+        android:layout_margin="20dp" />
+
+</LinearLayout>

@@ -16,7 +16,7 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiInterfaceUser {
-    @GET("user/read_user")
+    @GET("User/read_user")
     Call<ResponseUser> getUser(
             @Query("id_user") int idUser,
             @Query("email_user") String emailUser,
@@ -26,8 +26,23 @@ public interface ApiInterfaceUser {
     );
 
     @Multipart
-    @POST("user/create_user")
+    @POST("User/create_user")
     Call<Response> createUser(
+            @Part("email_user") RequestBody emailUser,
+            @Part("first_name") RequestBody firstName,
+            @Part("last_name") RequestBody lastName,
+            @Part("jenis_kelamin") RequestBody jenisKelamin,
+            @Part("no_hp") RequestBody noHp,
+            @Part("alamat") RequestBody alamat,
+            @Part("rt") RequestBody rt,
+            @Part("rw") RequestBody rw,
+            @Part MultipartBody.Part foto_profile
+    );
+
+    @Multipart
+    @POST("User/update_user")
+    Call<Response> updateUser(
+            @Part("id_user") RequestBody id_user,
             @Part("email_user") RequestBody emailUser,
             @Part("first_name") RequestBody firstName,
             @Part("last_name") RequestBody lastName,

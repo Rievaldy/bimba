@@ -52,7 +52,6 @@ import retrofit2.Callback;
 import static com.example.bimba.Util.getPathFromUri;
 import static com.example.bimba.Util.loadImage;
 import static com.example.bimba.Util.showMessage;
-import static com.example.bimba.Util.uploadImage;
 
 public class RegisterUser extends AppCompatActivity{
 
@@ -99,7 +98,7 @@ public class RegisterUser extends AppCompatActivity{
         fotoProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ContextCompat.checkSelfPermission(RegisterUser.this,
+                if(ContextCompat.checkSelfPermission(getApplicationContext(),
                         Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                     SelectImage();
                 }else{
@@ -254,9 +253,10 @@ public class RegisterUser extends AppCompatActivity{
     private void createUser( User user){
         RequestBody requestFile = null;
         String filename = "none";
+        String name = user.getFirstName()+"-"+user.getLastName();
         if(path != null){
             File file = new File(path);
-            filename = file.getName();
+            filename = file.getName().contains(".jpeg") ? name + ".jpeg" : name + ".jpg";
             requestFile = RequestBody.create(MediaType.parse("multipart/form-file"), file);
         }else{
             requestFile = RequestBody.create(MultipartBody.FORM,"");
@@ -272,14 +272,12 @@ public class RegisterUser extends AppCompatActivity{
                 MultipartBody.create(MediaType.parse("multipart/form-data"), user.getRw()),
                 MultipartBody.Part.createFormData("foto_profile", filename,requestFile)
         );
-        Log.d(TAG, "createUser: "+ call);
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 if(response.isSuccessful()){
                     loading.dismiss();
                     showMessage(RegisterUser.this, "Berhasil Membuat Akun");
-                    Log.d(TAG, "onResponse: " + response.body().getMessage());
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {

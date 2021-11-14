@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="wrap_content" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_margin="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:src="@drawable/profile"
+                android:id="@+id/ivDetailSiswaImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivDetailUploadSiswaImage"
+                android:src="@drawable/ic_baseline_photo_camera_24"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="-25dp"
+                android:layout_toRightOf="@+id/ivDetailSiswaImage"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:civ_circle_background_color="@color/colorPrimaryDark"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutDetailNisSiswa"
+            android:foreground="?android:selectableItemBackground"
+            android:clickable="true"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:src="@drawable/card"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:scaleType="centerCrop"/>
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nomor Induk Siswa"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvNisSiswa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NIS"
+                    android:textSize="18dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_marginVertical="2dp"
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:background="#000"/>
+        <LinearLayout
+            android:id="@+id/layoutDetailNamaSiswa"
+            android:foreground="?android:selectableItemBackground"
+            android:clickable="true"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:src="@drawable/ic_baseline_person_24"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"/>
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nama"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDetailNamaSiswa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nama User"
+                    android:textSize="18dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_marginVertical="2dp"
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:background="#000"/>
+
+        <LinearLayout
+            android:id="@+id/layoutDetailJKSiswa"
+            android:foreground="?android:selectableItemBackground"
+            android:clickable="true"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:src="@drawable/gender"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"/>
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jenis Kelamin"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDetailJKSiswa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gender User"
+                    android:textSize="18dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_marginVertical="2dp"
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:background="#000"/>
+
+        <LinearLayout
+            android:id="@+id/layoutDetailTanggalLahirSiswa"
+            android:foreground="?android:selectableItemBackground"
+            android:clickable="true"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:src="@drawable/ic_baseline_calendar_today_24"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"/>
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal Lahir"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDetailTanggalLahir"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal Lahir Siswa"
+                    android:textSize="18dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_marginVertical="2dp"
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:background="#000"/>
+
+        <LinearLayout
+            android:id="@+id/layoutDetailTahunMasukSiswa"
+            android:foreground="?android:selectableItemBackground"
+            android:clickable="true"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:src="@drawable/ic_baseline_calendar_today_24"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"/>
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tahun Masuk"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDetailTahunMasuk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tahun Masuk Siswa"
+                    android:textSize="18dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

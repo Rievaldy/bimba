@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.bimba">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:requestLegacyExternalStorage="true"
@@ -14,9 +15,31 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        tools:replace="android:allowBackup"
         android:theme="@style/AppTheme">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
         <activity android:name=".LoginActivity"/>
+        <activity android:name=".BiayaActivity"/>
+        <activity android:name=".PaketActivity"/>
+        <activity android:name=".TambahSiswaActivity"/>
+        <activity android:name=".ProfileSiswaActivity"/>
+        <activity android:name=".ProfileUserActivity"/>
+        <activity android:name=".SiswaActivity"/>
         <activity android:name=".RegisterUser"/>
+        <activity android:name=".DetailPaketActivity"/>
+        <activity android:name=".DaftarPaketActivity"/>
+        <activity android:name=".TagihanActivity"/>
+        <activity android:name=".DetailTagihanActivity"/>
+        <activity android:name=".DetailHistoryPembayaranActivity"/>
+        <activity android:name=".TransaksiActivity"/>
         <activity android:name=".HomeActivity"/>
         <activity android:name=".SplashScreen">
             <intent-filter>
