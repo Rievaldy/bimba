@@ -81,9 +81,6 @@ public class RegisterUser extends AppCompatActivity{
         setContentView(R.layout.activity_register_user);
 
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         etFirstName = findViewById(R.id.et_first_name);
         etLastName = findViewById(R.id.et_last_name);
