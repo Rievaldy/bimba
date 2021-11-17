@@ -79,7 +79,7 @@ public class RegisterUser extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_user);
-
+        
         etFirstName = findViewById(R.id.et_first_name);
         etLastName = findViewById(R.id.et_last_name);
         rgKelamin = findViewById(R.id.rgKelamin);
