@@ -92,13 +92,16 @@ public class DetailHistoryPembayaranActivity extends AppCompatActivity {
             btnApproval.setVisibility(View.GONE);
             btnDownloadPdf.setVisibility(View.VISIBLE);
 
-        }else{
+        }else if(sessionManagement.getUserAccessSession() == 1){
             btnApproval.setVisibility(View.VISIBLE);
             btnDownloadPdf.setVisibility(View.GONE);
 
             if(completeHistoryPembayaran.getHistoryPembayaran().getApproved() == 1){
                 btnApproval.setText("Batalkan Persetujuan");
             }
+        }else{
+            btnApproval.setVisibility(View.GONE);
+            btnDownloadPdf.setVisibility(View.GONE);
         }
         btnDownloadPdf.setOnClickListener(new View.OnClickListener() {
             @Override

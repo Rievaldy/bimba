@@ -44,6 +44,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.bimba.Util.showMessage;
+
 public class SettingDownloadExcel extends AppCompatActivity {
     private LinearLayout layoutStart, layoutEnd;
     private static final int STORAGE_PERMISSION_CODE = 1;
@@ -112,7 +114,7 @@ public class SettingDownloadExcel extends AppCompatActivity {
                         completeHistoryPembayaranArrayList = response.body().getData();
                         exportToExcel();
                     }else{
-                        Util.showMessage(SettingDownloadExcel.this, "Maaf Tidak terdapat data pada tanggal" + etStart.getText().toString() +" - "+etEnd.getText().toString());
+                        showMessage(SettingDownloadExcel.this, "Maaf Tidak terdapat data pada tanggal" + etStart.getText().toString() +" - "+etEnd.getText().toString());
                     }
                 }
             }
@@ -144,7 +146,7 @@ public class SettingDownloadExcel extends AppCompatActivity {
     }
 
     private void exportToExcel(){
-        File filePath = new File(Environment.getDownloadCacheDirectory() + File.separator + "Laporan.xls");
+        File filePath = new File(Environment.getExternalStorageDirectory() + File.separator + "Laporan.xls");
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
         HSSFSheet hssfSheet = hssfWorkbook.createSheet("Laporan Pemasukan");
         HSSFRow hssfRow = hssfSheet.createRow(0);
@@ -158,7 +160,14 @@ public class SettingDownloadExcel extends AppCompatActivity {
         HSSFCell CellIdTagihan = hssfRow.createCell(2);
         CellIdTagihan.setCellValue("Id Tagihan.");
 
-        HSSFCell jumlahSetoran = hssfRow.createCell(3);
+
+        HSSFCell CellNamaPembayar = hssfRow.createCell(3);
+        CellNamaPembayar.setCellValue("Nama Pembayar");
+
+        HSSFCell CellUntukPembayaran = hssfRow.createCell(4);
+        CellUntukPembayaran.setCellValue("Untuk Pembayaran");
+
+        HSSFCell jumlahSetoran = hssfRow.createCell(5);
         jumlahSetoran.setCellValue("Jumlah Setoran");
 
         addRowExcel(hssfSheet, completeHistoryPembayaranArrayList);
@@ -174,6 +183,7 @@ public class SettingDownloadExcel extends AppCompatActivity {
             if (fileOutputStream!=null){
                 fileOutputStream.flush();
                 fileOutputStream.close();
+                showMessage(SettingDownloadExcel.this, "Berhasil Mendownload Laporan");
             }
         }catch (Exception e){
             Log.d("TAG", "exportToExcel: " + e.getMessage());
@@ -194,7 +204,14 @@ public class SettingDownloadExcel extends AppCompatActivity {
             HSSFCell CellIdTagihan = hssfRow.createCell(2);
             CellIdTagihan.setCellValue(completeHistoryPembayaranArrayList.get(i-1).getHistoryPembayaran().getIdTunggakan());
 
-            HSSFCell jumlahSetoran = hssfRow.createCell(3   );
+            HSSFCell CellNamaPembayar = hssfRow.createCell(3);
+            CellNamaPembayar.setCellValue(completeHistoryPembayaranArrayList.get(i-1).getUser().getFirstName() +" "+ completeHistoryPembayaranArrayList.get(i-1).getUser().getLastName());
+
+            HSSFCell CellUntukPembayaran = hssfRow.createCell(4);
+            CellUntukPembayaran.setCellValue(completeHistoryPembayaranArrayList.get(i-1).getSiswa().getFirstName() +" "+ completeHistoryPembayaranArrayList.get(i-1).getSiswa().getLastName());
+
+
+            HSSFCell jumlahSetoran = hssfRow.createCell(5);
             jumlahSetoran.setCellValue(completeHistoryPembayaranArrayList.get(i-1).getHistoryPembayaran().getJumlahDisetorkan());
             total+= completeHistoryPembayaranArrayList.get(i-1).getHistoryPembayaran().getJumlahDisetorkan();
         }
@@ -204,7 +221,7 @@ public class SettingDownloadExcel extends AppCompatActivity {
         HSSFCell CellTitle = totalRow.createCell(0);
         CellTitle.setCellValue("TOTAL");
 
-        HSSFCell cellTotal = totalRow.createCell(3);
+        HSSFCell cellTotal = totalRow.createCell(5);
         cellTotal.setCellValue(total);
 
     }

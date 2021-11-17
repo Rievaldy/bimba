@@ -1,5 +1,8 @@
 package com.example.bimba;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -15,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.bimba.Model.User;
 import com.example.bimba.RESTAPI.ApiClient;
@@ -54,6 +59,10 @@ public class ProfileUserActivity extends AppCompatActivity {
     private LinearLayout layoutNoHpUser;
     private LinearLayout layoutAlamat;
     private ApiInterfaceUser apiInterfaceUser;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,7 +89,15 @@ public class ProfileUserActivity extends AppCompatActivity {
 
         loadUser();
 
-        ivUploadUser.setOnClickListener(view -> SelectImage());
+        ivUploadUser.setOnClickListener(view -> {
+            if(ContextCompat.checkSelfPermission(getApplicationContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                SelectImage();
+            }else{
+                requestStoragePermission();
+            }
+
+        });
 
         layoutNamaUser.setOnClickListener(view -> {
             user = (User) showDialogEditText(ProfileUserActivity.this, "Ubah Nama", "nama", tvNamaUser, user);
@@ -166,18 +183,6 @@ public class ProfileUserActivity extends AppCompatActivity {
                 PICK_IMAGE_REQUEST);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == STORAGE_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                SelectImage();
-            } else {
-                Toast.makeText(this, "Tidak Mendapatkan Hak Akses Melihat Gambar",Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     private void backToHome(){
         startActivity(new Intent(ProfileUserActivity.this, HomeActivity.class));
         finish();
@@ -191,6 +196,42 @@ public class ProfileUserActivity extends AppCompatActivity {
             path = getPathFromUri(this, uri);
             loadImage(uri.toString(), ivFotoUser, ProfileUserActivity.this);
             user.setFotoProfile(path);
+        }
+    }
+
+    private void requestStoragePermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission Needed")
+                    .setMessage("We Need Permission to Access Your Galery to upload your File into Our Database")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.requestPermissions(ProfileUserActivity.this, PERMISSIONS_STORAGE,STORAGE_PERMISSION_CODE);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .create()
+                    .show();
+        }else{
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                SelectImage();
+            } else {
+                Toast.makeText(this, "Tidak Mendapatkan Hak Akses Storage",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

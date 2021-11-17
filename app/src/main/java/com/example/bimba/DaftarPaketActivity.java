@@ -302,7 +302,7 @@ public class DaftarPaketActivity extends AppCompatActivity {
             if(Integer.valueOf(etSetoran.getText().toString()) > tunggakan.getTotalHarusBayar()){
                 etSetoran.setText(String.valueOf(tunggakan.getTotalHarusBayar()));
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy-hh-mm-ss", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
             String currentDate = sdf.format(Calendar.getInstance().getTime());
             tunggakan.setTahunMasuk(currentDate);
             tunggakan.setBaruDibayarkan(0);
