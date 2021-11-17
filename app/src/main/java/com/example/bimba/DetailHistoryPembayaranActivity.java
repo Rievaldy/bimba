@@ -81,8 +81,8 @@ public class DetailHistoryPembayaranActivity extends AppCompatActivity {
         idHistoryPembayaran.setText(completeHistoryPembayaran.getHistoryPembayaran().getIdHistoryPembayaran());
         idTagihan.setText(String.valueOf(completeHistoryPembayaran.getTunggakan().getIdTunggakan()));
         namaPaket.setText(completeHistoryPembayaran.getJenisPaket().getDescPaket());
-        namaSiswa.setText(completeHistoryPembayaran.getSiswa().getFirstName() + " "+ completeHistoryPembayaran.getSiswa().getFirstName());
-        namaUser.setText(completeHistoryPembayaran.getUser().getFirstName() + " "+ completeHistoryPembayaran.getUser().getFirstName());
+        namaSiswa.setText(completeHistoryPembayaran.getSiswa().getFirstName() + " "+ completeHistoryPembayaran.getSiswa().getLastName());
+        namaUser.setText(completeHistoryPembayaran.getUser().getFirstName() + " "+ completeHistoryPembayaran.getUser().getLastName()    );
         jumlahPembayaran.setText("Rp. " + completeHistoryPembayaran.getHistoryPembayaran().getJumlahDisetorkan());
         tanggalTransaksi.setText(completeHistoryPembayaran.getHistoryPembayaran().getTanggalTransaksi());
         btnDownloadPdf = findViewById(R.id.btn_downloadPdf);

@@ -51,6 +51,10 @@ public class SettingDownloadExcel extends AppCompatActivity {
     private Button download;
     private ApiInterfaceHistoryPembayaran apiInterfaceHistoryPembayaran;
     private ArrayList<CompleteHistoryPembayaran> completeHistoryPembayaranArrayList;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,7 +144,7 @@ public class SettingDownloadExcel extends AppCompatActivity {
     }
 
     private void exportToExcel(){
-        File filePath = new File(Environment.getExternalStorageDirectory() + File.separator + "tes.xls");
+        File filePath = new File(Environment.getDownloadCacheDirectory() + File.separator + "Laporan.xls");
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
         HSSFSheet hssfSheet = hssfWorkbook.createSheet("Laporan Pemasukan");
         HSSFRow hssfRow = hssfSheet.createRow(0);
@@ -172,7 +176,7 @@ public class SettingDownloadExcel extends AppCompatActivity {
                 fileOutputStream.close();
             }
         }catch (Exception e){
-
+            Log.d("TAG", "exportToExcel: " + e.getMessage());
         }
     }
 
@@ -213,7 +217,7 @@ public class SettingDownloadExcel extends AppCompatActivity {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            ActivityCompat.requestPermissions(SettingDownloadExcel.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_PERMISSION_CODE);
+                            ActivityCompat.requestPermissions(SettingDownloadExcel.this, PERMISSIONS_STORAGE,STORAGE_PERMISSION_CODE);
                         }
                     })
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
