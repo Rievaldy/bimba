@@ -33,7 +33,7 @@
                 android:textSize="45dp"/>
         </LinearLayout>
 
-    <LinearLayout
+        <LinearLayout
         android:layout_marginVertical="15dp"
         android:layout_height="wrap_content" android:layout_width="match_parent"
         android:orientation="vertical">
@@ -282,8 +282,15 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+        </LinearLayout>
     </LinearLayout>
-    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnApprovalPembayaran"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Setujui"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

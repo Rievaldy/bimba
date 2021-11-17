@@ -28,7 +28,7 @@ import static com.example.bimba.Util.showMessage;
 
 public class LoginActivity extends AppCompatActivity {
 
-    TextView tvDaftar;
+    TextView tvDaftar, lupaPass;
     EditText etEmailUser;
     EditText etPassword;
     Button login;
@@ -46,7 +46,15 @@ public class LoginActivity extends AppCompatActivity {
         etEmailUser = findViewById(R.id.loginEmail);
         etPassword = findViewById(R.id.loginPassword);
         apiInterfaceUserAccess = ApiClient.getClient().create(ApiInterfaceUserAccess.class);
+        lupaPass = findViewById(R.id.lupapass);
         sessionManagement = new SessionManagement(getApplicationContext());
+
+        lupaPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, LupaPasswordActivity.class));
+            }
+        });
 
         tvDaftar.setOnClickListener(new View.OnClickListener() {
             @Override

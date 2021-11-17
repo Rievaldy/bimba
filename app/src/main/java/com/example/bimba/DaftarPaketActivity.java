@@ -304,7 +304,7 @@ public class DaftarPaketActivity extends AppCompatActivity {
             }
             SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy-hh-mm-ss", Locale.getDefault());
             String currentDate = sdf.format(Calendar.getInstance().getTime());
-            tunggakan.setTahunMasuk(String.valueOf(currentDate));
+            tunggakan.setTahunMasuk(currentDate);
             tunggakan.setBaruDibayarkan(0);
             openMidtransPayment();
         }

@@ -15,15 +15,24 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bimba.Adapter.DataSiswaAdapter;
+import com.example.bimba.Adapter.ListPaketSiswaAdapter;
 import com.example.bimba.Model.Siswa;
 import com.example.bimba.Model.User;
 import com.example.bimba.RESTAPI.ApiClient;
+import com.example.bimba.RESTAPI.HistoryPembayaran.CompleteHistoryPembayaran;
 import com.example.bimba.RESTAPI.Response;
 import com.example.bimba.RESTAPI.Siswa.ApiInterfaceSiswa;
+import com.example.bimba.RESTAPI.Tunggakan.ApiInterfaceTunggakan;
+import com.example.bimba.RESTAPI.Tunggakan.CompleteTunggakan;
+import com.example.bimba.RESTAPI.Tunggakan.ResponseTunggakan;
 import com.example.bimba.RESTAPI.User.ApiInterfaceUser;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -54,6 +63,12 @@ public class ProfileSiswaActivity extends AppCompatActivity {
     private LinearLayout layoutTanggalLahir;
     private LinearLayout layoutTahunMasuk;
     private ApiInterfaceSiswa apiInterfaceSiswa;
+    private ApiInterfaceTunggakan apiInterfaceTunggakan;
+    private RecyclerView rvPaketSiswa;
+    private ProfileSiswaListener listener;
+    private ArrayList<CompleteTunggakan> completeTunggakanArrayList;
+    private LinearLayoutManager mManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,9 +87,19 @@ public class ProfileSiswaActivity extends AppCompatActivity {
         layoutJenisKelaminSiswa = findViewById(R.id.layoutDetailJKSiswa);
         layoutTanggalLahir = findViewById(R.id.layoutDetailTanggalLahirSiswa);
         layoutTahunMasuk = findViewById(R.id.layoutDetailTahunMasukSiswa);
+        rvPaketSiswa = findViewById(R.id.rvPaketSiswa);
+        listener = new ProfileSiswaListener() {
+            @Override
+            public void onClickPaket(CompleteTunggakan completeTunggakan) {
+
+            }
+        };
+
 
         apiInterfaceSiswa = ApiClient.getClient().create(ApiInterfaceSiswa.class);
+        apiInterfaceTunggakan = ApiClient.getClient().create(ApiInterfaceTunggakan.class);
         loadUser();
+        loadTagihanBySiswa();
 
         ivUploadSiswa.setOnClickListener(view -> SelectImage());
         layoutNamaSiswa.setOnClickListener(view -> siswa = (Siswa)showDialogEditText(ProfileSiswaActivity.this, "Ubah Nama Siswa", "nama", tvNamaSiswa, siswa));
@@ -90,6 +115,26 @@ public class ProfileSiswaActivity extends AppCompatActivity {
         tvJenisKelaminSiswa.setText(siswa.getJenisKelamin());
         tvTanggalLahir.setText(siswa.getTanggalLahir());
         tvTahunMasuk.setText(siswa.getTahunMasuk());
+    }
+
+    private void loadTagihanBySiswa(){
+        Call<ResponseTunggakan> call = apiInterfaceTunggakan.readTunggakan(0,siswa.getNis(),0, null, 0);
+        call.enqueue(new Callback<ResponseTunggakan>() {
+            @Override
+            public void onResponse(Call<ResponseTunggakan> call, retrofit2.Response<ResponseTunggakan> response) {
+                if(response.isSuccessful()){
+                    completeTunggakanArrayList = response.body().getData();
+                    if(response.body().getData() != null){
+                        prepareRecycleView();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseTunggakan> call, Throwable t) {
+                Log.d("TAG", "onFailure: " + t.getMessage());
+            }
+        });
     }
 
     private void updateUser(){
@@ -154,6 +199,15 @@ public class ProfileSiswaActivity extends AppCompatActivity {
                 PICK_IMAGE_REQUEST);
     }
 
+    private void prepareRecycleView(){
+        ListPaketSiswaAdapter dataSiswaAdapter = new ListPaketSiswaAdapter(ProfileSiswaActivity.this, completeTunggakanArrayList, listener);
+        mManager = new LinearLayoutManager(ProfileSiswaActivity.this);
+        mManager.setReverseLayout(true);
+        mManager.setStackFromEnd(true);
+        rvPaketSiswa.setLayoutManager(mManager);
+        rvPaketSiswa.setAdapter(dataSiswaAdapter);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -186,5 +240,9 @@ public class ProfileSiswaActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         updateUser();
+    }
+
+    public interface ProfileSiswaListener{
+        void onClickPaket(CompleteTunggakan completeTunggakan);
     }
 }

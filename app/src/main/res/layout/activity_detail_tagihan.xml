@@ -287,34 +287,41 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_margin="10dp"
+    <LinearLayout
+        android:id="@+id/layout_bayar_detail_tagihan"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_gravity="bottom|center">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_jumlah_pembayaran"
-            android:hint="Jumlah Dibayarkan"
-            android:background="@android:color/transparent"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="bottom|center">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_jumlah_pembayaran"
+                android:hint="Jumlah Dibayarkan"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:maxLength="9"
+                android:inputType="number"
+                android:textColorHint="@color/colorPrimary"
+                android:textColor="@color/colorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_bayar_tagihan"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:maxLength="9"
-            android:inputType="number"
-            android:textColorHint="@color/colorPrimary"
-            android:textColor="@color/colorPrimary" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="Bayar Sekarang"/>
 
-    <Button
-        android:id="@+id/btn_bayar_tagihan"
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Bayar Sekarang"/>
+    </LinearLayout>
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.bimba.Util.findDifference;
 import static com.example.bimba.Util.loadImage;
 import static com.example.bimba.Util.showMessage;
 
@@ -34,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private SessionManagement sessionManagement;
     private ArrayList<Module> modules;
+    private Button btnLogout;
     private ModuleAdapter moduleAdapter;
     private int level;
     private String email;
@@ -58,11 +61,21 @@ public class HomeActivity extends AppCompatActivity {
         ivProfile = findViewById(R.id.iv_profil);
         tvNama = findViewById(R.id.tv_nama);
         tvNoRegis = findViewById(R.id.tv_no_regis);
+        btnLogout = findViewById(R.id.btnlogout);
         modules = new ArrayList<>();
 
         recyclerViewTemplateModule = findViewById(R.id.template_module);
         apiInterfaceUser = ApiClient.getClient().create(ApiInterfaceUser.class);
         loadDataUser();
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sessionManagement.removeUserAccessSession();
+                sessionManagement.removeUserEmailSession();
+                sessionManagement.removeUserIdSession();
+                goBackToLogin();
+            }
+        });
         switch (level){
             case 1 :
                 settingsForModeAdmin();break;
@@ -95,7 +108,6 @@ public class HomeActivity extends AppCompatActivity {
         //modules.add(new Module(2,"Daftar Murid", R.drawable.siswa, "USER", SiswaActivity.class));
         modules.add(new Module(3,"Transaksi", R.drawable.transaksi, "OWNER", TransaksiActivity.class));
         modules.add(new Module(4,"Tagihan", R.drawable.budget, "OWNER", TagihanActivity.class));
-        //modules.add(new Module(5,"Biaya", R.drawable.biaya, "USER", BiayaActivity.class));
     }
 
     private void settingsForModeUser(){
@@ -103,8 +115,6 @@ public class HomeActivity extends AppCompatActivity {
         modules.add(new Module(2,"Daftar Murid", R.drawable.siswa, "USER", SiswaActivity.class));
         modules.add(new Module(3,"Transaksi", R.drawable.transaksi, "USER", TransaksiActivity.class));
         modules.add(new Module(4,"Tagihan", R.drawable.budget, "USER", TagihanActivity.class));
-        modules.add(new Module(5,"Biaya", R.drawable.biaya, "USER", BiayaActivity.class));
-
     }
 
     private void loadDataUser(){
@@ -138,5 +148,11 @@ public class HomeActivity extends AppCompatActivity {
         recyclerViewTemplateModule.setLayoutManager(layoutManager);
         recyclerViewTemplateModule.setAdapter(moduleAdapter);
         recyclerViewTemplateModule.setBackground(null);
+    }
+
+    private void goBackToLogin(){
+        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

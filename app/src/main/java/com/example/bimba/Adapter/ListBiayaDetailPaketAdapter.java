@@ -17,6 +17,7 @@ import com.example.bimba.Model.JenisPaket;
 import com.example.bimba.Model.ListBiaya;
 import com.example.bimba.PaketActivity;
 import com.example.bimba.R;
+import com.example.bimba.SessionManagement;
 
 import java.util.ArrayList;
 
@@ -24,11 +25,13 @@ public class ListBiayaDetailPaketAdapter extends RecyclerView.Adapter<ListBiayaD
     private Context context;
     private ArrayList<ListBiaya> data;
     private DetailPaketActivity.DetailPaketListener listener;
+    private SessionManagement sessionManagement;
 
     public ListBiayaDetailPaketAdapter(Context cont, ArrayList<ListBiaya> data, DetailPaketActivity.DetailPaketListener listener){
         context= cont;
         this.data= data;
         this.listener = listener;
+        sessionManagement = new SessionManagement(context.getApplicationContext());
     }
 
     @Override
@@ -44,6 +47,9 @@ public class ListBiayaDetailPaketAdapter extends RecyclerView.Adapter<ListBiayaD
         Log.d("tes", "onBindViewHolder: "+ data.get(position).getPembayaranBerkala());
         String pembayaran = data.get(position).getPembayaranBerkala() == 0 ? "Sekali" : "Perbulan";
         holder.jenisPembayaran.setText(pembayaran);
+        if(sessionManagement.getUserAccessSession() == 3){
+            holder.btnDelete.setVisibility(View.GONE);
+        }
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

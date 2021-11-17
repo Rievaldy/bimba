@@ -44,6 +44,8 @@ public class PaketActivity extends AppCompatActivity {
     LinearLayoutManager mManager;
     private AdapterClickedListener adapterClickedListener;
 
+    SessionManagement sessionManagement;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +54,13 @@ public class PaketActivity extends AppCompatActivity {
         rvListPaket = findViewById(R.id.list_data_paket);
         btnAddPaket = findViewById(R.id.btn_add_paket);
         apiInterfaceJenisPaket = ApiClient.getClient().create(ApiInterfaceJenisPaket.class);
+        sessionManagement = new SessionManagement(getApplicationContext());
         loadDataJenisPaket();
+
+        if(sessionManagement.getUserAccessSession() == 3){
+            btnAddPaket.setVisibility(View.GONE);
+        }
+
         adapterClickedListener = new AdapterClickedListener() {
             @Override
             public void onClickListener(JenisPaket jenisPaket) {

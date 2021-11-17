@@ -49,7 +49,12 @@ public class TagihanActivity extends AppCompatActivity {
     }
 
     private void loadDataTagihan(){
-        Call<ResponseTunggakan> call = apiInterfaceTunggakan.readTunggakan(0,0,0,null,sessionManagement.getUserIdSession());
+        Call<ResponseTunggakan> call;
+        if(sessionManagement.getUserAccessSession() == 3){
+             call = apiInterfaceTunggakan.readTunggakan(0,0,0,null,sessionManagement.getUserIdSession());
+        }else{
+            call = apiInterfaceTunggakan.readTunggakan(0,0,0,null,0);
+        }
         call.enqueue(new Callback<ResponseTunggakan>() {
             @Override
             public void onResponse(Call<ResponseTunggakan> call, Response<ResponseTunggakan> response) {

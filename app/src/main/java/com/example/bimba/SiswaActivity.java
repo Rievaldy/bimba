@@ -54,10 +54,11 @@ public class SiswaActivity extends AppCompatActivity {
         };
         idUser = sessionManagement.getUserIdSession();
         mode = sessionManagement.getUserAccessSession();
-        switch (mode){
-            case 1 : initializeForAdmin();break;
-            case 2 : initializeForOwner();break;
-            case 3 : initializeForUser();break;
+        initializeUI();
+        if( mode == 3){
+            btnAddSiswa.setVisibility(View.VISIBLE);
+        }else{
+            btnAddSiswa.setVisibility(View.GONE);
         }
 
         btnAddSiswa.setOnClickListener(new View.OnClickListener() {
@@ -71,21 +72,19 @@ public class SiswaActivity extends AppCompatActivity {
         });
     }
 
-    private void initializeForAdmin(){
-        loadDataSiswa(idUser);
-    }
 
-    private void initializeForOwner(){
-        loadDataSiswa(idUser);
-    }
-
-    private void initializeForUser(){
+    private void initializeUI(){
         loadDataSiswa(idUser);
     }
 
     private void loadDataSiswa(int idUser){
         if(idUser != 0){
-            Call<ResponseSiswa> call = apiInterfaceSiswa.getSiswa(0, idUser, null, null, null);
+            Call<ResponseSiswa> call;
+            if(mode == 3){
+                call = apiInterfaceSiswa.getSiswa(0, idUser, null, null, null);
+            }else{
+                call = apiInterfaceSiswa.getSiswa(0, 0, null, null, null);
+            }
             call.enqueue(new Callback<ResponseSiswa>() {
                 @Override
                 public void onResponse(Call<ResponseSiswa> call, Response<ResponseSiswa> response) {

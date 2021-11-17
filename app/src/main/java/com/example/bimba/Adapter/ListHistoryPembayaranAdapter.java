@@ -8,11 +8,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bimba.R;
 import com.example.bimba.RESTAPI.HistoryPembayaran.CompleteHistoryPembayaran;
 import com.example.bimba.RESTAPI.Tunggakan.CompleteTunggakan;
+import com.example.bimba.SessionManagement;
 import com.example.bimba.TagihanActivity;
 import com.example.bimba.TransaksiActivity;
 
@@ -23,11 +25,13 @@ public class ListHistoryPembayaranAdapter extends RecyclerView.Adapter<ListHisto
     private Context context;
     private ArrayList<CompleteHistoryPembayaran> data;
     private TransaksiActivity.HistoryPembayaranListener listener;
+    private SessionManagement sessionManagement;
 
     public ListHistoryPembayaranAdapter(Context cont, ArrayList<CompleteHistoryPembayaran> data, TransaksiActivity.HistoryPembayaranListener listener){
         context= cont;
         this.data= data;
         this.listener = listener;
+        sessionManagement = new SessionManagement(context.getApplicationContext());
     }
 
     @Override
@@ -43,6 +47,14 @@ public class ListHistoryPembayaranAdapter extends RecyclerView.Adapter<ListHisto
         holder.namaPaket.setText(data.get(position).getJenisPaket().getDescPaket());
         String status = (data.get(position).getTunggakan().getTotalHarusBayar() - data.get(position).getTunggakan().getBaruDibayarkan()) == 0 ? "Lunas" : "Belum Lunas";
         holder.namaUser.setText(data.get(position).getUser().getFirstName() + " "+data.get(position).getUser().getLastName());
+        if(sessionManagement.getUserAccessSession() == 1){
+            if(data.get(position).getHistoryPembayaran().getApproved() == 0){
+                holder.layout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRed));
+            }else{
+                holder.layout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorGreen));
+            }
+        }
+
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

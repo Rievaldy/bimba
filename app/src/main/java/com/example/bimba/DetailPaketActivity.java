@@ -42,6 +42,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 public class DetailPaketActivity extends AppCompatActivity {
+    private SessionManagement sessionManagement;
     private DetailPaketListener detailPaketListener;
     private JenisPaket jenisPaket;
     private DetailPaket detailPaket;
@@ -73,6 +74,15 @@ public class DetailPaketActivity extends AppCompatActivity {
         apiInterfaceDetailPaket = ApiClient.getClient().create(ApiInterfaceDetailPaket.class);
         apiInterfaceBiaya = ApiClient.getClient().create(ApiInterfaceBiaya.class);
         loadData(jenisPaket);
+        sessionManagement = new SessionManagement(getApplicationContext());
+
+        if(sessionManagement.getUserAccessSession() == 3){
+            addBiaya.setVisibility(View.GONE);
+            daftarPaket.setVisibility(View.VISIBLE);
+        }else{
+            addBiaya.setVisibility(View.VISIBLE);
+            daftarPaket.setVisibility(View.GONE);
+        }
         detailPaketListener = new DetailPaketListener() {
             @Override
             public void onDeleteListBiaya(ListBiaya listBiaya) {

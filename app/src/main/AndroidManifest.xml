@@ -36,6 +36,8 @@
         <activity android:name=".RegisterUser"/>
         <activity android:name=".DetailPaketActivity"/>
         <activity android:name=".DaftarPaketActivity"/>
+        <activity android:name=".SettingDownloadExcel"/>
+        <activity android:name=".LupaPasswordActivity"/>
         <activity android:name=".TagihanActivity"/>
         <activity android:name=".DetailTagihanActivity"/>
         <activity android:name=".DetailHistoryPembayaranActivity"/>

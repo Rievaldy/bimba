@@ -3,6 +3,7 @@ package com.example.bimba;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.example.bimba.RESTAPI.HistoryPembayaran.ResponseHistoryPembayaran;
 import com.example.bimba.RESTAPI.Tunggakan.ApiInterfaceTunggakan;
 import com.example.bimba.RESTAPI.Tunggakan.CompleteTunggakan;
 import com.example.bimba.RESTAPI.Tunggakan.ResponseTunggakan;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -27,21 +29,29 @@ import retrofit2.Response;
 
 public class TransaksiActivity extends AppCompatActivity {
 
-    private RecyclerView rvListTagihan;
+    private RecyclerView rvListTransaksi;
     private LinearLayoutManager mManager;
     private HistoryPembayaranListener listener;
     private ApiInterfaceHistoryPembayaran apiInterfaceHistoryPembayaran;
     private SessionManagement sessionManagement;
     private ArrayList<CompleteHistoryPembayaran> completeHistoryPembayaranArrayList;
+    private FloatingActionButton btnDownloadExcel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tagihan);
+        setContentView(R.layout.activity_transaksi);
 
-        rvListTagihan = findViewById(R.id.list_data_tagihan);
+        rvListTransaksi = findViewById(R.id.list_data_transaksi);
         apiInterfaceHistoryPembayaran = ApiClient.getClient().create(ApiInterfaceHistoryPembayaran.class);
         sessionManagement = new SessionManagement(getApplicationContext());
+        btnDownloadExcel = findViewById(R.id.btn_downloadExcel);
+
+        if(sessionManagement.getUserAccessSession() != 2){
+            btnDownloadExcel.setVisibility(View.GONE);
+        }
+
+
         listener = new HistoryPembayaranListener() {
             @Override
             public void onClickListener(CompleteHistoryPembayaran completeHistoryPembayaran) {
@@ -49,11 +59,23 @@ public class TransaksiActivity extends AppCompatActivity {
             }
         };
         loadDataHistory();
-
+        btnDownloadExcel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(TransaksiActivity.this, SettingDownloadExcel.class));
+            }
+        });
     }
 
     private void loadDataHistory(){
-        Call<ResponseHistoryPembayaran> call = apiInterfaceHistoryPembayaran.readHistoryPembayaran("0",0,sessionManagement.getUserIdSession());
+        Call<ResponseHistoryPembayaran> call;
+        if(sessionManagement.getUserAccessSession() == 3){//user
+            call = apiInterfaceHistoryPembayaran.readHistoryPembayaran("0",0,-1,sessionManagement.getUserIdSession(), null,null);
+        }else if(sessionManagement.getUserAccessSession() == 2){//owner
+            call = apiInterfaceHistoryPembayaran.readHistoryPembayaran("0",0,1,0, null, null);
+        }else{ //admin
+            call = apiInterfaceHistoryPembayaran.readHistoryPembayaran("0",0,-1,0, null, null);
+        }
         call.enqueue(new Callback<ResponseHistoryPembayaran>() {
             @Override
             public void onResponse(Call<ResponseHistoryPembayaran> call, Response<ResponseHistoryPembayaran> response) {
@@ -78,14 +100,15 @@ public class TransaksiActivity extends AppCompatActivity {
         mManager = new LinearLayoutManager(TransaksiActivity.this);
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
-        rvListTagihan.setLayoutManager(mManager);
-        rvListTagihan.setAdapter(listHistoryPembayaranAdapter);
+        rvListTransaksi.setLayoutManager(mManager);
+        rvListTransaksi.setAdapter(listHistoryPembayaranAdapter);
     }
 
     private void goToDetailHistory(CompleteHistoryPembayaran completeHistoryPembayaran){
         Intent intent = new Intent(TransaksiActivity.this, DetailHistoryPembayaranActivity.class);
         intent.putExtra("EXTRA_COMPLETE_HISTORY_PEMBAYARAN", completeHistoryPembayaran);
         startActivity(intent);
+        finish();
     }
 
     public interface HistoryPembayaranListener{

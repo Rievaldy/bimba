@@ -16,7 +16,10 @@ public interface ApiInterfaceHistoryPembayaran {
     Call<ResponseHistoryPembayaran> readHistoryPembayaran(
             @Query("id_history_pembayaran") String idHistoryPembayaran,
             @Query("id_tunggakan") int idTunggakan,
-            @Query("id_user") int idUser
+            @Query("approved") int approved,
+            @Query("id_user") int idUser,
+            @Query("start_date") String startDate,
+            @Query("end_date") String endDate
     );
 
     @FormUrlEncoded
@@ -29,7 +32,7 @@ public interface ApiInterfaceHistoryPembayaran {
     );
 
     @FormUrlEncoded
-    @POST("HistoryPembayaran/delete_historyPembayaran")
+    @POST("HistoryPembayaran/update_historyPembayaran")
     Call<Response> updateHistoryPembayaran(
             @Field("id_history_pembayaran") String idHistoryPembayaran,
             @Field("id_tunggakan") int idTunggakan,

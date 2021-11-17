@@ -18,6 +18,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +30,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.bimba.RESTAPI.ApiClient;
+import com.example.bimba.RESTAPI.HistoryPembayaran.ApiInterfaceHistoryPembayaran;
 import com.example.bimba.RESTAPI.HistoryPembayaran.CompleteHistoryPembayaran;
+import com.example.bimba.RESTAPI.Response;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
@@ -43,13 +47,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+
 public class DetailHistoryPembayaranActivity extends AppCompatActivity {
     private TextView idHistoryPembayaran, idTagihan, namaPaket, namaSiswa,namaUser, jumlahPembayaran, tanggalTransaksi;
     private FloatingActionButton btnDownloadPdf;
     private CompleteHistoryPembayaran completeHistoryPembayaran;
     private static final int STORAGE_PERMISSION_CODE = 1;
     private LinearLayout layout;
-    private Bitmap bitmap;
+    private Button btnApproval;
+    private SessionManagement sessionManagement;
+    private ApiInterfaceHistoryPembayaran apiInterfaceHistoryPembayaran;
     private String dirpath;
 
     @Override
@@ -64,7 +73,10 @@ public class DetailHistoryPembayaranActivity extends AppCompatActivity {
         jumlahPembayaran = findViewById(R.id.et_jumlah_pembayaran_dtr);
         tanggalTransaksi = findViewById(R.id.et_tanggal_pembayaran_dtr);
         layout = findViewById(R.id.layout_detail_history_pembayaran);
+        btnApproval = findViewById(R.id.btnApprovalPembayaran);
+        sessionManagement = new SessionManagement(getApplicationContext());
         completeHistoryPembayaran = getIntent().getParcelableExtra("EXTRA_COMPLETE_HISTORY_PEMBAYARAN");
+        apiInterfaceHistoryPembayaran = ApiClient.getClient().create(ApiInterfaceHistoryPembayaran.class);
 
         idHistoryPembayaran.setText(completeHistoryPembayaran.getHistoryPembayaran().getIdHistoryPembayaran());
         idTagihan.setText(String.valueOf(completeHistoryPembayaran.getTunggakan().getIdTunggakan()));
@@ -73,9 +85,21 @@ public class DetailHistoryPembayaranActivity extends AppCompatActivity {
         namaUser.setText(completeHistoryPembayaran.getUser().getFirstName() + " "+ completeHistoryPembayaran.getUser().getFirstName());
         jumlahPembayaran.setText("Rp. " + completeHistoryPembayaran.getHistoryPembayaran().getJumlahDisetorkan());
         tanggalTransaksi.setText(completeHistoryPembayaran.getHistoryPembayaran().getTanggalTransaksi());
-
-
         btnDownloadPdf = findViewById(R.id.btn_downloadPdf);
+
+
+        if(sessionManagement.getUserAccessSession() == 3){
+            btnApproval.setVisibility(View.GONE);
+            btnDownloadPdf.setVisibility(View.VISIBLE);
+
+        }else{
+            btnApproval.setVisibility(View.VISIBLE);
+            btnDownloadPdf.setVisibility(View.GONE);
+
+            if(completeHistoryPembayaran.getHistoryPembayaran().getApproved() == 1){
+                btnApproval.setText("Batalkan Persetujuan");
+            }
+        }
         btnDownloadPdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +114,13 @@ public class DetailHistoryPembayaranActivity extends AppCompatActivity {
                 }else{
                     requestStoragePermission();
                 }
+            }
+        });
+
+        btnApproval.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateApprovalStatus();
             }
         });
     }
@@ -113,7 +144,9 @@ public class DetailHistoryPembayaranActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
     }
+
     public void imageToPDF() throws FileNotFoundException {
         try {
             Document document = new Document();
@@ -133,6 +166,31 @@ public class DetailHistoryPembayaranActivity extends AppCompatActivity {
         }
     }
 
+    private void updateApprovalStatus(){
+        int approval = completeHistoryPembayaran.getHistoryPembayaran().getApproved() == 0 ? 1 : 0;
+        Call<Response> call = apiInterfaceHistoryPembayaran
+                .updateHistoryPembayaran(
+                        completeHistoryPembayaran.getHistoryPembayaran().getIdHistoryPembayaran(),
+                        completeHistoryPembayaran.getHistoryPembayaran().getIdTunggakan(),
+                        completeHistoryPembayaran.getHistoryPembayaran().getJumlahDisetorkan(),
+                        approval);
+
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                if(response.isSuccessful()){
+                    Util.showMessage(DetailHistoryPembayaranActivity.this, "Berhasil Merubah Approval");
+                    goBackToListTransaksi();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                Log.d("TAG", "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
     private void requestStoragePermission() {
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
             new AlertDialog.Builder(this)
@@ -141,7 +199,7 @@ public class DetailHistoryPembayaranActivity extends AppCompatActivity {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            ActivityCompat.requestPermissions(DetailHistoryPembayaranActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_PERMISSION_CODE);
+                            ActivityCompat.requestPermissions(DetailHistoryPembayaranActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_PERMISSION_CODE);
                         }
                     })
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -172,6 +230,11 @@ public class DetailHistoryPembayaranActivity extends AppCompatActivity {
                 Toast.makeText(this, "Tidak Mendapatkan Hak Akses Melihat Gambar",Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void goBackToListTransaksi(){
+        startActivity(new Intent(DetailHistoryPembayaranActivity.this, TransaksiActivity.class));
+        finish();
     }
 }
 

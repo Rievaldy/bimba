@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,11 +50,13 @@ public class DetailTagihanActivity extends AppCompatActivity {
     private TextView idTagihan, namaSiswa, namaUser, namaPaket, statusPembayaran, totalHarusBayar, sudahDibayarkan, sisaPembayaran;
     private TextInputEditText jumlahPembayaran;
     private Button btnBayar;
+    private LinearLayout layoutBayar;
     private CompleteTunggakan completeTunggakan;
     private HistoryPembayaran historyPembayaran;
     private ApiInterfaceMidtrans apiInterfaceMidtrans;
     private ApiInterfaceHistoryPembayaran apiInterfaceHistoryPembayaran;
     private ApiInterfaceTunggakan apiInterfaceTunggakan;
+    private SessionManagement sessionManagement;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +73,11 @@ public class DetailTagihanActivity extends AppCompatActivity {
         sisaPembayaran = findViewById(R.id.et_sisa_pembayaran_dt);
         btnBayar = findViewById(R.id.btn_bayar_tagihan);
         jumlahPembayaran = findViewById(R.id.et_jumlah_pembayaran);
+        layoutBayar = findViewById(R.id.layout_bayar_detail_tagihan);
+        sessionManagement = new SessionManagement(getApplicationContext());
         historyPembayaran = new HistoryPembayaran();
+
+
 
         apiInterfaceMidtrans = ApiMidtrans.createService(ApiInterfaceMidtrans.class, "SB-Mid-server-22EyrGFZV-X4qWbLHKRTtfND", null);
         apiInterfaceHistoryPembayaran = ApiClient.getClient().create(ApiInterfaceHistoryPembayaran.class);
@@ -84,6 +91,11 @@ public class DetailTagihanActivity extends AppCompatActivity {
         String total = "Rp. " + completeTunggakan.getTunggakan().getTotalHarusBayar();
         String baruBayar = "Rp. " + completeTunggakan.getTunggakan().getBaruDibayarkan();
         String sisa = "Rp. " + (completeTunggakan.getTunggakan().getTotalHarusBayar()-completeTunggakan.getTunggakan().getBaruDibayarkan());
+
+        if(sessionManagement.getUserAccessSession() == 1 || completeTunggakan.getTunggakan().getTotalHarusBayar()-completeTunggakan.getTunggakan().getBaruDibayarkan() == 0){
+            layoutBayar.setVisibility(View.GONE);
+        }
+
         idTagihan.setText(String.valueOf(completeTunggakan.getTunggakan().getIdTunggakan()));
         namaSiswa.setText(completeTunggakan.getSiswa().getFirstName()+" "+completeTunggakan.getSiswa().getLastName());
         namaPaket.setText(completeTunggakan.getJenisPaket().getDescPaket());

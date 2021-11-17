@@ -29,4 +29,12 @@ public interface ApiInterfaceUserAccess {
             @Field("password") String password,
             @Field("id_level") int idLevel
     );
+
+    @FormUrlEncoded
+    @POST("UserAccess/update_userAccess")
+    Call<Response> updateUserAccess(
+            @Field("email_user") String emailUser,
+            @Field("password") String password,
+            @Field("id_level") int idLevel
+    );
 }
