@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ResponseUserAccess> call, Response<ResponseUserAccess> response) {
                         if(response.isSuccessful()){
-                            if (response.body().getData().size() > 0){
+                            if (response.body().getData() != null){
                                 userAccess = response.body().getData().get(0);
                                 sessionManagement.saveUserAccessSession(userAccess.getIdLevel());
                                 sessionManagement.saveUserEmailSession(userAccess.getEmailUser());
@@ -91,6 +91,8 @@ public class LoginActivity extends AppCompatActivity {
                                         showMessage(LoginActivity.this, "something Wrong Happend");
                                         break;
                                 }
+                            }else{
+                                showMessage(LoginActivity.this, "Maaf Email dan Password Tidak dikenali");
                             }
                         }else{
                             try {
