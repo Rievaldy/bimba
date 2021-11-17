@@ -91,7 +91,7 @@ public class ProfileSiswaActivity extends AppCompatActivity {
         listener = new ProfileSiswaListener() {
             @Override
             public void onClickPaket(CompleteTunggakan completeTunggakan) {
-
+                goToDetailTagihan(completeTunggakan);
             }
         };
 
@@ -223,6 +223,12 @@ public class ProfileSiswaActivity extends AppCompatActivity {
     private void backToHome(){
         startActivity(new Intent(ProfileSiswaActivity.this, SiswaActivity.class));
         finish();
+    }
+
+    private void goToDetailTagihan(CompleteTunggakan completeTunggakan){
+        Intent intent = new Intent(ProfileSiswaActivity.this, DetailTagihanActivity.class);
+        intent.putExtra("EXTRA_COMPLETE_TUNGGAKAN", completeTunggakan);
+        startActivity(intent);
     }
 
     @Override
