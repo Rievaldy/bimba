@@ -92,7 +92,7 @@ public class DetailTagihanActivity extends AppCompatActivity {
         String baruBayar = "Rp. " + completeTunggakan.getTunggakan().getBaruDibayarkan();
         String sisa = "Rp. " + (completeTunggakan.getTunggakan().getTotalHarusBayar()-completeTunggakan.getTunggakan().getBaruDibayarkan());
 
-        if(sessionManagement.getUserAccessSession() == 1 || completeTunggakan.getTunggakan().getTotalHarusBayar()-completeTunggakan.getTunggakan().getBaruDibayarkan() == 0){
+        if(sessionManagement.getUserAccessSession() == 1  || sessionManagement.getUserAccessSession() == 1 || completeTunggakan.getTunggakan().getTotalHarusBayar()-completeTunggakan.getTunggakan().getBaruDibayarkan() == 0){
             layoutBayar.setVisibility(View.GONE);
         }
 
