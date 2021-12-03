@@ -55,7 +55,8 @@ public class SettingDownloadExcel extends AppCompatActivity {
     private ArrayList<CompleteHistoryPembayaran> completeHistoryPembayaranArrayList;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_PHONE_STATE
     };
 
     @Override

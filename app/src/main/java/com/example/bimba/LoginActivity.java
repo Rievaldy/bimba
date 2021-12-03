@@ -1,8 +1,15 @@
 package com.example.bimba;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +43,12 @@ public class LoginActivity extends AppCompatActivity {
     private ApiInterfaceUserAccess apiInterfaceUserAccess;
     private UserAccess userAccess;
     private SessionManagement sessionManagement ;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_PHONE_STATE
+    };
+    private static final int STORAGE_PERMISSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,20 +129,72 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void modeUser(){
-        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish();
+        if(!requestStoragePermission()){
+            ActivityCompat.requestPermissions(LoginActivity.this, PERMISSIONS_STORAGE, STORAGE_PERMISSION_CODE);
+        }else{
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void modeAdmin(){
-        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish();
+        if(!requestStoragePermission()){
+            ActivityCompat.requestPermissions(LoginActivity.this, PERMISSIONS_STORAGE, STORAGE_PERMISSION_CODE);
+        }else{
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void modeOwner(){
-        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish();
+        if(!requestStoragePermission()){
+            ActivityCompat.requestPermissions(LoginActivity.this, PERMISSIONS_STORAGE, STORAGE_PERMISSION_CODE);
+        }else{
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
+
+    private boolean requestStoragePermission() {
+        for(String permission : PERMISSIONS_STORAGE){
+            if(ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Tidak Mendapatkan Hak Akses",Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Butuh Hak Akses Membaca File",Toast.LENGTH_SHORT).show();
+            } else if (grantResults[1] != PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Butuh Hak Akses Membuat File",Toast.LENGTH_SHORT).show();
+            }else if(grantResults[2] != PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Butuh Hak Akses Untuk Midtrans",Toast.LENGTH_SHORT).show();
+            }else{
+                switch (userAccess.getIdLevel()){
+                    case 1 :
+                        modeAdmin();
+                        break;
+                    case 2 :
+                        modeOwner();
+                        break;
+                    case 3 :
+                        modeUser();
+                        break;
+                    default:
+                        showMessage(LoginActivity.this, "something Wrong Happend");
+                        break;
+                }
+            }
+        }
+    }
+
 }
